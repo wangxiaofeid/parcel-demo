@@ -3,9 +3,10 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'mobx-react';
 import { HashRouter as Router, Route } from 'react-router-dom';
 import "babel-polyfill";
-import AppStore from './store/appStore';
+import { LazyRoute } from "./components";
+import AppStore from './stores/appStore';
 import App from "./app";
-import Home from "./page/home";
+import Home from "./pages/home";
 
 const appStore = new AppStore();
 
@@ -21,7 +22,10 @@ ReactDOM.render(
     >
         <Router>
             <App>
-                <Route exact path="/" component={Home}/>
+                <Route exact path="/" component={Home} />
+                <Route exact path="/page1" render={props => (
+                    <LazyRoute {...props} component={import("./pages/page1")} />
+                )}/>
             </App>
         </Router>
     </Provider>,
